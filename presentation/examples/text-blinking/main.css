@@ -1,0 +1,100 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: black;
+
+    font-family: BPneon, Arial;
+    font-size: 100px;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 0 15px white;
+}
+
+.signature {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    max-width: 900px;
+
+    animation: blink 1.5s;
+}
+
+.signature__word:first-child {
+    margin-right: 70px;
+}
+
+.logo {
+    animation: blink 1s;
+}
+
+.logo img {
+    width: 400px;
+    height: auto;
+
+    opacity: 0.9;
+}
+
+.random-blink {
+    animation: late-blink 3s 2.5s infinite; 
+}
+
+@keyframes blink {
+    0%, 44% {
+        opacity: 0;
+    }
+
+    45% {
+        opacity: 0.3;
+    }
+
+    46%, 47%, 49% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    53%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes late-blink {
+    0% {
+        opacity: 1;
+    }
+
+    2%, 69% {
+        opacity: 0.8;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    72%, 100% {
+        opacity: 0.6;
+    }
+}
+
+@font-face {
+    font-family: BPneon;
+    src: url("fonts/BPneon.otf");
+    font-weight: normal;
+}

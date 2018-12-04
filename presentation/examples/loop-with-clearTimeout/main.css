@@ -1,0 +1,167 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+
+    margin: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: black;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+}
+
+.scheme {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    padding: 10px;
+
+    width: 69%;
+}
+
+.scheme__call-stack,
+.scheme__api {
+    width: 49%;
+    height: 65%;
+
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.scheme__queue {
+    width: 100%;
+    height: 33%;
+
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+
+    width: 100%;
+
+    border-bottom: 1px solid gray;
+
+    font-family: Roboto, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+.ui {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+
+    width: 31%;
+}
+
+.ui__code,
+.ui__console {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.ui__code {
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    color: white;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.ui__code p {
+    margin-left: 20px;
+}
+
+.ui__console {
+    height: 48.3%;
+
+    margin-top: 2%;
+}
+
+.ui__console span {
+    padding: 5px 10px;
+    font-size: 30px;
+}
+
+#first-log,
+#second-log,
+#third-log,
+#timeout {
+    display: none;
+    position: absolute;
+
+    padding: 5px 10px;
+
+    min-width: 100px;
+    height: auto;
+
+    border-radius: 3px;
+    background-color: rgb(59, 59, 59);
+
+    color: white;
+    font-family: arial;
+}
+
+#first-code.open,
+#second-code.open,
+#third-code.open,
+#clear-code.open {
+    color: orange;
+    text-decoration: underline;
+}
+
+#first-log.open,
+#second-log.open,
+#third-log.open {
+    display: block;
+    top: 14%;
+    left: 3%;
+}
+
+#first-console,
+#second-console,
+#third-console {
+    opacity: 0;
+    color: white;
+    font-family: arial;
+}
+
+#first-console.open,
+#second-console.open,
+#third-console.open {
+    opacity: 1;
+}
+
+#timeout.api {
+    display: block;
+    top: 14%;
+    left: 38%;
+}
+
+#timeout.queue {
+    display: block;
+    bottom: 14%;
+    left: 3%;
+}
+
+#time.close {
+    display: none; 
+}

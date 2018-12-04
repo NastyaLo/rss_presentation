@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Event loop</h2> 
+					<h2>and</h2>
+					<h2>CSS animations</h2>
+					<aside class="notes">
+						Hi, my name is Nastya. I am junior Front-end developer. 
+						Today I will tell you about event loop and css animations.
+						So let's start without further ado from the event loop.
+					</aside>
+				</section>
+				<section>
+					<h2>Event loop</h2>
+				</section>
+				<section data-background-image="images/js_engine.png" data-background-size="contain">
+					<aside class="notes">
+						Okay, look at the picture. You can see a scheme of an engine for processing js in a browser. There a lot of different engines, but one of the most popular is engine for chrome - V8. An engine interacts with memory heap and the call stack. Memory heap is the place where our function, variables and etc are saved. the call stack - is the execution context. The call stack can contain only one function at the moment. 
+						Also there are some functions that are not described in EcmaScript specification, like timeouts, mouse events and etc. This functions and events are from web API. And there is a separate queue for them.
+						When we run some script in browser, engine goes through the code line by line and decide what to do with each of them: if a line is native javascript - engine places this line to the call stack, if a line is from web API -  engine places it to the web API area, and after processing web API is placing code into call queue. Functions in call queue are waiting, while all functions from the call stack will be launched and after that every function from call queue will be placed to the call stack one by one.
+						So let’s go over a small script to finally understand the theory. 
+					</aside>
+				</section>
+				<section>
+					<a href="examples/loop/index.html">Simple event loop</a>
+					<aside class="notes">
+						console.log(1) is being placed into the call stack, run and removed from the call stack, setTimeout is web API, so it goes there and waits, console.log(3) is being placed into the call stack, run and removed from the call stack. After that, the call stack is empty, the main part of the code has been executed, subsequently we are going to use things from call queue. There is console.log(2), which is being placed to the call stack, run and deleted from it. All instructions were run. Script is over. 
+						What if we use clear timeout or clear interval methods? Let’s look:
+					</aside>
+				</section>
+				<section>
+					<a href="examples/loop-with-clearTimeout/index.html">Event loop with clearTimeout method</a>
+					<aside class="notes">
+						console.log(1) is being placed into the call stack, run and removed from the call stack, setTimeout is web API, so it goes there and waits. But there is clearTimeout method in the next line. So console.log(2) is removed from web API. console.log(3) is being placed into the call stack, run and removed from the call stack. After that, the call stack is empty, the main part of the code has been executed, subsequently we are going to use things from call queue. Call queue is empty too. All instructions were run. Script is over. 
+						If we use clearTimeout when console.log(2) is in call queue - it is going to be removed from it.
+					</aside>
+				</section>
+				<section>
+					<h3>Queue order</h3>
+					<aside class="notes">
+						Let’s say some words about queue order.
+					</aside>
+				</section>
+				<section>
+					<a href="examples/queue-order/index.html" target="_blank">Queue example</a>
+					<aside class="notes">
+							To start with, I’ll give you a few seconds to think, which function from the code will run first. Okay, let’s run our script. As you can see, despite the fact that we had call click() function after saySmth function, click function ran before saySmth function. 
+							Now I am going to explain the reason of this process. Most of the events that depend on user interaction on a page like “click”, “mouseover” and etc. have more priority, than other functions, because there is a vital necessity to keep our page at a life state.							
+					</aside>
+				</section>
+				<section>
+					<h2>CSS animations</h2>
+					<br/>
+					<span class="fragment" style="margin-right: 30px">Transition</span><span class="fragment">Animation</span>
+					<aside class="notes">
+						Alright, let’s go to the next part of my presentation: CSS animations
+						There are two ways to create an animation using only css on your page: you can use both transition and animation properties. You may ask, what is the difference between them. The difference is in complicity of this properties. Transition property is more simple and can describe our animation between only two states of an element: the start state and the end state. Animation css property is more elaborate. Using keyframe CSS option we can create complex animations by describing a state of our element as many times as we want. Let’s look at the same animation that was created both by using transform and animation properties. 
+					</aside>
+				</section>
+				<section>
+					<a href="examples/transform-with-animation/index.html" target="_blank">The same animation using transition and animation properties</a>
+					<aside class="notes">
+						To create base background-color transition we should mention end state and transition properties. 
+						If we want to set the same transition settings for every changed properties we can wrile all keyword and time 
+						in seconds, or set settings for every propertie like that (change all on background-color)
+						
+						To create animation we should write keyframes keyword than animation name and set properies in intermediate 
+						states in perсents. And write animation property to an element: first animation name and than others.
+					</aside>
+				</section>
+				<section>
+					<h3>Animation example</h3>
+					<aside class="notes">
+						As I already said, animation property is more complex, that is why we can create some types of behaviour of an element that are impossible to create using transition property. I recommend to use transition property if you need to animate very simple things without animation repeat, when background changes from one color to another for example. The performance for similar things will be the same both for animation and transition properties. 
+						Now let’s look, what pretty things we can create using animation property.
+					</aside>
+				</section>
+				<section>
+					<h3><a href="examples/text-blinking/index.html" target="_blank">Text blinking</a></h3>
+					<aside class="notes">
+						There is very simple but beautiful, to my mind, animation. Let's look how I was create it
+						There are two keyframe fules. The first is for initial blink and the second is for
+						random blink while the page is open. 
+					</aside>
+				</section>
+				<section>
+					<h3>CSS animations VS JavaScript animations</h3>
+					<aside class="notes">
+						When I was preparing for this part of the presentation I thought “Hmm, what should i write in compatibility of css animation and js animation. Performance maybe? okay it is obviously, css is faster, I’ll just need to say: o, guys, use css animations, it is faster, than javascript animations, blah-blah-blah”. But when I started to search information about performance comparison, I got a little confused. They are not so simple as it looks like. Let’s deal with it.
+						As you all know CSS says how page looks and JavaScript does all the things the HTML and CSS can’t in front-end part of web developing. Earlier animations can be available only using JS, but now CSS and JavaScript do overlap especially since CSS3 release. 							When you will decide what to use for animation: CSS or JS you should think not only about performance. You should look at the whole situation. Let’s speak about resilience: if you forget a comma somewhere in CSS nothing very bad will happen, but if you forget a semicolon or parentheses somewhere in JS, a lot of our code can become unworkable. Also incorrect JS animation can freeze your page and make it unavailable for user interaction. Speaking about performance: css animations are not always as fast as js animations, in some cases javascript animations are faster. But not always. So I can say only one thing: every case is unique and you need to decide what to use after figuring out all pros and cons of both ways.
+					</aside>
+				</section>
+				<section>
+					<h3>Thank you for your attention!</h3>
+					<h4><a href="t.me/Nastya_loyko">t.me/Nastya_loyko</a></h4>
+					<h4><a href="mailto:loyko2802@gmail.com">loyko2802@gmail.com</a></h4>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

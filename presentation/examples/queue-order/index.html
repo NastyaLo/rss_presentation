@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Queue order</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div id="div"></div>
+    <script>
+        var div = document.getElementById('div');
+
+        div.onclick = function () {
+            div.innerHTML = 'clicked';
+        };
+
+        function click () {
+            div.click();
+        }
+
+        function saySmth () {
+            setTimeout(() => {
+                alert('Hello, world!');
+            }, 0);
+        }
+
+        function clickTimer () {
+            setTimeout(() => {
+                    div.click();
+                }, 0);
+        }
+
+        saySmth();
+        click();
+        // clickTimer();
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@keyframes pink-to-blue {
+    0% {
+		background-color: pink;
+    }
+	
+	100% {
+		background-color: lightblue;
+    }
+}
+
+div {
+    width: 100px;
+    height: 100px;
+
+    margin-bottom: 20px;
+
+    background-color: pink;
+}
+
+.transition:hover {
+    transition: all 1s;
+    background-color: lightblue;
+}
+
+.animation:hover {
+    animation: pink-to-blue 1s;
+}

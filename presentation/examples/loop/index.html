@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Loop example</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <section class="scheme">
+        <div class="scheme__call-stack">
+            <h1 class="title">Call stack</h1>
+        </div>
+        <div class="scheme__api">
+            <h1 class="title">Web API</h1>
+        </div>
+        <div class="scheme__queue">
+            <h1 class="title">Call queue</h1>
+        </div>
+    </section>
+    <section class="ui">
+        <div class="ui__code">
+            <h1 class="title">script</h1>
+            <p>
+                <span id="first-code">console.log(1);</span>
+                <br>
+                <br>
+                <span id="second-code">
+                    <span>setTimeout(() => {</span>
+                    <br>
+                    <span style="margin-left: 30px;">console.log(2);</span>
+                    <br>
+                    <span>}, 3000);</span>
+                </span>
+                <br>
+                <br>
+                <span id="third-code">console.log(3);</span>
+            </p>
+        </div>
+        <div class="ui__console">
+            <h1 class="title">console</h1>
+            <span id="first-console">1</span>
+            <span id="third-console">3</span>
+            <span id="second-console">2</span>
+        </div>
+    </section>
+    <div id="first-log">console.log(1);</div>
+    <span id="second-log">
+        <span>setTimeout(() => {</span>
+        <br>
+        <span style="margin-left: 30px;">console.log(2);</span>
+        <br>
+        <span>}, 100);</span>
+    </span>
+    <div id="third-log">console.log(3);</div>
+    <div id="timeout">
+        <span>console.log(2)</span>
+        <span id="time"> , 3000ms</span>
+    </div>
+    <div id="fourth-log">console.log(2);</div>
+    <script src="main.js"></script>
+</body>
+</html>
