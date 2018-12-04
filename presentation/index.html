@@ -37,14 +37,14 @@
 					</aside>
 				</section>
 				<section>
-					<a href="examples/loop/index.html">Simple event loop</a>
+					<a href="examples/loop/index.html" target="_blank">Simple event loop</a>
 					<aside class="notes">
 						console.log(1) is being placed into the call stack, run and removed from the call stack, setTimeout is web API, so it goes there and waits, console.log(3) is being placed into the call stack, run and removed from the call stack. After that, the call stack is empty, the main part of the code has been executed, subsequently we are going to use things from call queue. There is console.log(2), which is being placed to the call stack, run and deleted from it. All instructions were run. Script is over. 
 						What if we use clear timeout or clear interval methods? Let’s look:
 					</aside>
 				</section>
 				<section>
-					<a href="examples/loop-with-clearTimeout/index.html">Event loop with clearTimeout method</a>
+					<a href="examples/loop-with-clearTimeout/index.html" target="_blank">Event loop with clearTimeout method</a>
 					<aside class="notes">
 						console.log(1) is being placed into the call stack, run and removed from the call stack, setTimeout is web API, so it goes there and waits. But there is clearTimeout method in the next line. So console.log(2) is removed from web API. console.log(3) is being placed into the call stack, run and removed from the call stack. After that, the call stack is empty, the main part of the code has been executed, subsequently we are going to use things from call queue. Call queue is empty too. All instructions were run. Script is over. 
 						If we use clearTimeout when console.log(2) is in call queue - it is going to be removed from it.
