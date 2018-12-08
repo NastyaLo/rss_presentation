@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Event loop</h1> 
+					<aside class="notes">
+						Hi, my name is Nastya. I am junior Front-end developer. 
+						Today I will tell you about event loop.
+					</aside>
+				</section>
+				<section data-background-image="images/js_engine.png" data-background-size="contain">
+					<aside class="notes">
+						Okay, look at the picture. You can see a scheme of an engine for processing JavaScript. An engine interacts with memory heap and the call stack. 
+						Memory heap is where the memory allocation happens. The call stack - is the execution context, a structure, which records where in the program we are. The call stack can contain only one function at the moment. 
+						Also there are some functions that are provided by browser API and not described in EcmaScript specification, like timeouts, mouse events and etc. And there is a separate queue for them. 
+						When we run some script in browser, engine goes through the code line by line and decide what to do with each of them: if a line is native javascript - engine places this line to the call stack, if a line is from web API -  engine places it to the web API area, and after processing web API is placing code into call queue. 
+						Functions in call queue are waiting, while all functions from the call stack will be launched and after that every function from call queue will be placed to the call stack one by one.
+						So let’s go over a small script to finally understand the theory. 
+					</aside>
+				</section>
+				<section>
+					<h3>Simple event loop</h3>
+				</section>
+				<section data-background-image="examples/loop/1.png"></section>
+				<section data-background-image="examples/loop/2.png"></section>
+				<section data-background-image="examples/loop/3.png"></section>
+				<section data-background-image="examples/loop/4.png"></section>
+				<section data-background-image="examples/loop/5.png"></section>
+				<section data-background-image="examples/loop/6.png"></section>
+				<section data-background-image="examples/loop/7.png"></section>
+				<section data-background-image="examples/loop/8.png"></section>
+				<section data-background-image="examples/loop/9.png"></section>
+				<section data-background-image="examples/loop/10.png"></section>
+				<section data-background-image="examples/loop/11.png"></section>
+				<section data-background-image="examples/loop/12.png"></section>
+				<section data-background-image="examples/loop/13.png"></section>
+				<section data-background-image="examples/loop/14.png"></section>
+				<section data-background-image="examples/loop/15.png"></section>
+				<section data-background-image="examples/loop/16.png"></section>
+				<section data-background-image="examples/loop/17.png"></section>
+				<section>
+					<h3>Event loop with clearTimeout method</h3>
+				</section>
+				<section data-background-image="examples/loop-with-clear-timeout/1.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/2.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/3.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/4.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/5.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/6.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/7.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/8.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/9.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/10.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/11.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/12.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/13.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/14.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/15.png" data-background-size="contain"></section>
+				<section>
+					<h3>Queue order</h3>
+				</section>
+				<section>
+					<img src="images/html.png" style="margin: 0;">
+					<p style="margin: 0;">main.js</p>
+					<pre style="margin: 0 auto;">
+						<code style="max-height: none;">
+div.onclick = function () {
+	alert('Click!');
+}
+
+function click () {
+	div.click();
+}
+								
+function saySmth () {
+	setTimeout(() => {
+		alert('Hello, world!'');
+	}, 0)
+}
+							
+saySmth();
+click();			
+						</code>
+					</pre>
+				</section>
+				<section data-background-image="examples/queue.png">
+				</section>
+				<section data-background-image="examples/queue1.png">
+				</section>
+				<section>
+					<section>
+						<h3>
+							Keeping our page at a life state
+						</h3>
+					</section>
+					<section>
+							<p>Bad:</p>
+							<pre>
+								<code>
+someLongArray = [];
+		
+someSlowFunc () {};
+	
+someLongArray.forEach((item) => {
+	someSlowFunc(item);
+});
+								</code>
+							</pre>
+						</section>
+						<section>
+							<p>Good:</p>
+							<pre>
+								<code>
+someLongArray = [];
+		
+someSlowFunc () {};
+		
+someLongArray.forEach((item) => {
+	setTimeout(() => {
+		someSlowFunc(item);
+	}, 0);
+});
+								</code>
+							</pre>
+						</section>
+				</section>
+				<section>
+					<section>
+						<h3>Avoid synchronic requests</h3>
+					</section>
+					<section>
+						<p>Bad: </p>
+						<pre>
+							<code>
+let response = ajax('https://example.com');
+
+console.log(response);									
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>Good: </p>
+						<pre>
+							<code>
+ajax('https://example.com', function (response) {
+	console.log(response);
+});
+							</code>
+						</pre>
+					</section>
+				</section>
+				<section>
+					<h3>Promise</h3>
+				</section>
+				<section>
+					<h3>Event loop with promise</h3>
+				</section>
+				<section data-background-image="examples/promise/1.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/2.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/3.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/4.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/5.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/6_0.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/6.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/7.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/8.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/9.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/10.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/11.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/13.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/14.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/15.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/16.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/17.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/18.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/19.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/20.png" data-background-size="contain"></section>
+				<section data-background-image="examples/promise/21.png" data-background-size="contain"></section>
+				<section>
+					<h3>Thank you for your attention!</h3>
+					<h4><a href="t.me/Nastya_loyko">t.me/Nastya_loyko</a></h4>
+					<h4><a href="mailto:loyko2802@gmail.com">loyko2802@gmail.com</a></h4>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

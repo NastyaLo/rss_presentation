@@ -41,6 +41,7 @@ document.onkeydown = function (e) {
 
                 setTimeout(() => {
                     timeout.classList.remove('api');
+                    timeout.classList.add('queue');
                     time.classList.add('close');
                 }, 3000);
 
@@ -48,10 +49,8 @@ document.onkeydown = function (e) {
 
             case 2:
                 clearCode.classList.add('open');
-                
-                setTimeout(() => {
-                    timeout.classList.remove('api');
-                }, 500);
+                timeout.classList.remove('api');
+                timeout.classList.remove('queue');
 
                 setTimeout(() => {
                     clearCode.classList.remove('open');

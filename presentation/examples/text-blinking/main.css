@@ -29,7 +29,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
 
-    max-width: 900px;
+    max-width: 800px;
 
     animation: blink 1.5s;
 }
