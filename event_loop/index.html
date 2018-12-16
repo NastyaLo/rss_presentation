@@ -26,32 +26,32 @@
 					<aside class="notes">
 						Okay, look at the picture. You can see a scheme of an engine for processing JavaScript. An engine interacts with memory heap and the call stack. 
 						Memory heap is where the memory allocation happens. The call stack - is the execution context, a structure, which records where in the program we are. The call stack can contain only one function at the moment. 
-						Also there are some functions that are provided by browser API and not described in EcmaScript specification, like timeouts, mouse events and etc. And there is a separate queue for them. 
+						Also there are some functions that are provided by browser API and not described in EcmaScript specification, like timeouts, mouse events and etc. And there is a separate queue for them - call queue or callback queue
 						When we run some script in browser, engine goes through the code line by line and decide what to do with each of them: if a line is native javascript - engine places this line to the call stack, if a line is from web API -  engine places it to the web API area, and after processing web API is placing code into call queue. 
-						Functions in call queue are waiting, while all functions from the call stack will be launched and after that every function from call queue will be placed to the call stack one by one.
-						So let’s go over a small script to finally understand the theory. 
+						Functions in call queue are waiting, while all native functions from the call stack will be launched and after that every function from call queue will be placed to the call stack one by one.
+						So let’s go over a small script to finally understand the theory.  
 					</aside>
 				</section>
 				<section>
 					<h3>Simple event loop</h3>
 				</section>
-				<section data-background-image="examples/loop/1.png"></section>
-				<section data-background-image="examples/loop/2.png"></section>
-				<section data-background-image="examples/loop/3.png"></section>
-				<section data-background-image="examples/loop/4.png"></section>
-				<section data-background-image="examples/loop/5.png"></section>
-				<section data-background-image="examples/loop/6.png"></section>
-				<section data-background-image="examples/loop/7.png"></section>
-				<section data-background-image="examples/loop/8.png"></section>
-				<section data-background-image="examples/loop/9.png"></section>
-				<section data-background-image="examples/loop/10.png"></section>
-				<section data-background-image="examples/loop/11.png"></section>
-				<section data-background-image="examples/loop/12.png"></section>
-				<section data-background-image="examples/loop/13.png"></section>
-				<section data-background-image="examples/loop/14.png"></section>
-				<section data-background-image="examples/loop/15.png"></section>
-				<section data-background-image="examples/loop/16.png"></section>
-				<section data-background-image="examples/loop/17.png"></section>
+				<section data-background-image="examples/loop/1.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/2.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/3.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/4.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/5.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/6.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/7.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/8.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/9.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/10.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/11.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/12.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/13.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/14.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/15.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/16.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop/17.png" data-background-size="contain"></section>
 				<section>
 					<h3>Event loop with clearTimeout method</h3>
 				</section>
@@ -63,6 +63,8 @@
 				<section data-background-image="examples/loop-with-clear-timeout/6.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/7.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/8.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/8_1.png" data-background-size="contain"></section>
+				<section data-background-image="examples/loop-with-clear-timeout/8_2.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/9.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/10.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/11.png" data-background-size="contain"></section>
@@ -70,6 +72,12 @@
 				<section data-background-image="examples/loop-with-clear-timeout/13.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/14.png" data-background-size="contain"></section>
 				<section data-background-image="examples/loop-with-clear-timeout/15.png" data-background-size="contain"></section>
+				<section>
+					<h3>LATER, but not necessary right after NOW</h3>
+					<aside class="notes">
+						Notice, that when you are using setTimeout / setInterval functions functions inside them are not being executed after 1s, for example. After 1s they will be placed to the call queue. In other words, function inside setTimeout or setInterval is executed “later”, but not necessary right after “now”.  
+					</aside>
+				</section>
 				<section>
 					<h3>Queue order</h3>
 				</section>
@@ -88,7 +96,7 @@ function click () {
 								
 function saySmth () {
 	setTimeout(() => {
-		alert('Hello, world!'');
+		alert('Hello, world!');
 	}, 0)
 }
 							
@@ -100,12 +108,18 @@ click();
 				<section data-background-image="examples/queue.png">
 				</section>
 				<section data-background-image="examples/queue1.png">
+					<aside class="notes">
+						Now I am going to explain the reason of this process. Most of the events that depend on user interaction on a page like “click”, “mouseover” and etc. have more priority, than other functions, because there is a vital necessity to keep our page at a life state. 
+					</aside>
 				</section>
 				<section>
 					<section>
 						<h3>
 							Keeping our page at a life state
 						</h3>
+						<aside class="notes">
+								There are also some ways to keep our page in a life state. You should break slow functions to small parts if it is possible. For example change this:
+						</aside>
 					</section>
 					<section>
 							<p>Bad:</p>
@@ -143,12 +157,16 @@ someLongArray.forEach((item) => {
 						<h3>Avoid synchronic requests</h3>
 					</section>
 					<section>
+						<aside class="notes">
+							This is synchronic request that can lead to page freezing, it means that browser can’t render, it can’t run any other code, it’s just stuck.
+							So write requests like that: 									
+						</aside>
 						<p>Bad: </p>
 						<pre>
 							<code>
 let response = ajax('https://example.com');
 
-console.log(response);									
+console.log(response);
 							</code>
 						</pre>
 					</section>
@@ -165,6 +183,10 @@ ajax('https://example.com', function (response) {
 				</section>
 				<section>
 					<h3>Promise</h3>
+					<aside class="notes">
+						You can also create async requests using promises. 
+						Promises has been added in es6 and to implement them runtime had to change. Another queue - job queue - has been added. Look at the example: 							
+					</aside>
 				</section>
 				<section>
 					<h3>Event loop with promise</h3>
@@ -190,6 +212,12 @@ ajax('https://example.com', function (response) {
 				<section data-background-image="examples/promise/19.png" data-background-size="contain"></section>
 				<section data-background-image="examples/promise/20.png" data-background-size="contain"></section>
 				<section data-background-image="examples/promise/21.png" data-background-size="contain"></section>
+				<section>
+					<h3>Job queue stands before call queue but after the main part of the code. </h3>
+					<aside class="notes">
+						As you can see job queue stands before call queue but after the main part of the code. An other words we can say that things from job queue will be run later, but as soon as possible. 
+					</aside>
+				</section>
 				<section>
 					<h3>Thank you for your attention!</h3>
 					<h4><a href="t.me/Nastya_loyko">t.me/Nastya_loyko</a></h4>
